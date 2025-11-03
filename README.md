@@ -1,23 +1,36 @@
+<div align="center">
+
+# 🧠 MLflow Learning Journey
+
+### _"Debugs, Dependencies & Determination"_
+
+> A hands-on journey by [**Oz Khan**](https://github.com/Oztheproblem)  
+> where every error was a lesson, and every coffee was a commit ☕
+
+</div>
+
+---
+
 # 🧠 MLflow Learning Journey — Debugs, Dependencies & Determination
 
 **Author:** Oz Khan ([@Oztheproblem](https://github.com/Oztheproblem))  
-**Goal:** To set up MLflow successfully, learn experiment tracking, and strengthen my Python/DevOps fundamentals — one coffee at a time ☕  
+**Goal:** To set up MLflow successfully, learn experiment tracking, and strengthen my Python/DevOps fundamentals — one coffee at a time ☕
 
 ---
 
 ## 🚀 Overview
 
 This project started as a simple “let me fork this and learn MLflow”…  
-and quickly turned into a multi-day adventure of debugging, dependency wrestling, and caffeine-powered perseverance 😅  
+and quickly turned into a multi-day adventure of debugging, dependency wrestling, and caffeine-powered perseverance 😅
 
-Between switching laptops, rebuilding environments, and learning how every package connects — this repo documents the *real* side of learning tech:  
+Between switching laptops, rebuilding environments, and learning how every package connects — this repo documents the _real_ side of learning tech:  
 figuring things out the hard way (but with humor and persistence).
 
 ---
 
 ## ⚙️ What’s Inside
 
-- A working **Python 3.14 environment**
+- A working **Python 3.11** virtual environment
 - MLflow setup (finally! 🎉)
 - Carefully restored `.venv` with all dependencies:
   - `mlflow`
@@ -26,6 +39,7 @@ figuring things out the hard way (but with humor and persistence).
   - `protobuf`
   - `opentelemetry`
   - `cachetools`
+  - `sqlparse`
 - Clean `requirements.txt` for reproducibility
 
 ---
@@ -35,15 +49,16 @@ figuring things out the hard way (but with humor and persistence).
 > “I thought the easy part was done once I forked the repo… then I met the dependency gods.”
 
 I’ve spent about **four separate days (spread over a few weeks)** configuring and learning this setup.  
-Each day came with new lessons — and yes, maybe one too many visits to *Gail’s Coffee* debugging environment paths, PowerShell policies, and the mysterious `(END)` screen.  
+Each day came with new lessons — and yes, maybe one too many visits to _Gail’s Coffee_ debugging environment paths, PowerShell policies, and the mysterious `(END)` screen.
 
-If this README exists, it means I finally got MLflow to import without red text 🎯  
+If this README exists, it means I finally got MLflow to import without red text 🎯
 
 ---
 
 ## 🧩 Why MLflow?
 
 Because it’s a perfect playground for:
+
 - Understanding **Python environments & dependencies**
 - Experiment tracking (used in real MLOps setups)
 - Building **DevOps-ready projects**
@@ -53,29 +68,21 @@ Even if you’re not training models yet, MLflow teaches discipline — versioni
 
 ---
 
-## 🧪 Next Steps
+## 🧪 Progress So Far
 
-- [ ] Create and log my first MLflow experiment  
-- [ ] Run and visualize metrics in MLflow UI  
-- [ ] Push experiment screenshots to GitHub  
-- [ ] Write a short post on lessons learned (with fewer coffees next time ☕😆)
+### ✅ **Lesson 6 – Experiment Tracking & Artifacts**
 
----
+- Logged parameters (`model_type`, `learning_rate`)
+- Tracked metrics (`accuracy`, `loss`) over multiple steps
+- Saved and logged artifacts (`results.csv`, `accuracy_plot.png`)
+- Confirmed reproducible experiment structure under `mlruns/`
 
-## 💡 Lessons Learned
+### ✅ **Lesson 7 – MLflow UI & Visualization**
 
-1. Never underestimate how much one missing dependency can teach you.
-2. `pip install` is powerful, but patience is mightier.
-3. Debugging with humor makes everything better.
-4. Always activate your `.venv` — future you will thank you.
+Launched the **MLflow Tracking UI** to visually explore all logged runs.
 
----
+**Key steps**
 
-## ✨ About Me
-
-I’m Oz — an up-and-coming talent in Tech, Makers Academy student, and self-taught AWS & Azure Cloud learner.  
-This repo is part of my broader journey into **DevOps**, **cloud fundamentals**, and **real-world debugging**.  
-
----
-
-🧃 *PS: If you’re reading this and also stuck in setup purgatory — take a break, grab a coffee, and come back refreshed. You’ve got this.*  
+```bash
+mlflow ui
+```
