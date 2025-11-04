@@ -86,3 +86,35 @@ Launched the **MLflow Tracking UI** to visually explore all logged runs.
 ```bash
 mlflow ui
 ```
+
+---
+
+## 🧪 Lesson 8 — Model Logging with MLflow
+
+This lesson was all about teaching MLflow to **track a real machine-learning model** — not just random metrics anymore, but an actual Ridge Regression model trained on the diabetes dataset.
+
+After setting up the environment (and convincing PowerShell to let me run scripts 😅), I managed to:
+
+- Train and evaluate a simple `Ridge(alpha=0.5)` model
+- Log parameters, metrics, and the model itself with MLflow
+- View it all neatly in the **MLflow UI** (`http://127.0.0.1:5000`)
+
+### 🔍 What I Learned
+
+1. How to structure a repeatable experiment using `mlflow.start_run()`
+2. The difference between **parameters** (inputs you tweak) and **metrics** (outputs you measure)
+3. How `mlflow.sklearn.log_model()` saves models for future comparison or deployment
+4. That warnings don’t always mean panic — sometimes they just mean _“You’re on the cutting edge!”_
+
+### ☕ Debugging Moments
+
+At one point, my terminal felt like it was serving more errors than Gail’s serves flat whites —  
+but eventually the environment behaved, dependencies aligned, and the UI popped up like magic.
+
+### 🧭 Next Up
+
+- [ ] Compare multiple `alpha` values and track which performs best
+- [ ] Explore MLflow’s **Artifacts** tab and see what’s really being saved
+- [ ] Push screenshots and share progress (because proof > promises)
+
+---
