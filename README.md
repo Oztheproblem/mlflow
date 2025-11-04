@@ -142,3 +142,38 @@ By varying the `alpha` parameter, each run was logged with its own metrics and p
 Next step: identify the best performing model and learn how to **register and version models** within MLflow’s Model Registry.
 
 ---
+
+---
+
+## ⚙️ Lesson 10 — Model Registry & Versioning
+
+This lesson introduced the MLflow Model Registry, a key feature for managing model versions and deployment stages.
+
+### 🔍 What I Did
+
+- Logged a Ridge Regression model
+- Registered it in the **Model Registry**
+- Learned how to access it through the MLflow UI
+- Experimented with versioning and model stage transitions (e.g., _Staging_ and _Production_)
+
+### 💡 Key Takeaways
+
+1. Each registered model is tracked with a unique version.
+2. The Model Registry centralises deployment-ready models.
+3. Transitions between stages (e.g., _Staging → Production_) mirror DevOps release practices.
+
+Next step: automate evaluation and version promotion — linking metrics to deployment readiness.
+
+---
+
++---------------------+ +----------------------+ +-----------------------+ +----------------------+
+| Step 1: Experiment | ---> | Step 2: MLflow Run | ---> | Step 3: Model Log | ---> | Step 4: Registry |
+| (train_model.py) | | (auto-tracked) | | (saved via MLflow) | | (versioned + staged)|
++---------------------+ +----------------------+ +-----------------------+ +----------------------+
+|
+v
++----------------------+
+| Step 5: Deployment |
+| (e.g., Staging → |
+| Production) |
++----------------------+
