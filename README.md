@@ -118,3 +118,27 @@ but eventually the environment behaved, dependencies aligned, and the UI popped 
 - [ ] Push screenshots and share progress (because proof > promises)
 
 ---
+
+---
+
+## ⚙️ Lesson 9 — Comparing Experiments & Model Versions
+
+This lesson focused on extending the previous Ridge Regression example to compare multiple model runs in MLflow.  
+By varying the `alpha` parameter, each run was logged with its own metrics and parameters, making it easy to visualise performance differences in the MLflow UI.
+
+### 🔍 What I Did
+
+- Created a new script `compare_experiments.py`
+- Tested Ridge Regression models with different `alpha` values
+- Logged each run to the **lesson_9_model_comparison** experiment
+- Used the MLflow UI to compare MSE values side by side
+
+### 💡 Key Takeaways
+
+1. MLflow automatically organises runs by experiment.
+2. Parameter sweeps (like `alpha` values) can be compared visually without extra code.
+3. Consistent naming of runs makes tracking progress easier over time.
+
+Next step: identify the best performing model and learn how to **register and version models** within MLflow’s Model Registry.
+
+---
