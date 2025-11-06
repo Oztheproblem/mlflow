@@ -185,73 +185,35 @@ This lesson introduced the MLflow Model Registry, a key feature for managing mod
 3. Learned about **model lifecycle management** and MLflow’s upcoming migration from _stages_ → _tags_.
 4. Reinforced the concept of continuous delivery — pushing the best model forward while maintaining full version history.
 
-### 🏁 Output Example
+### ⚙️ Lesson 12 — Serving & Live Predictions
 
-⚙️ Lesson 12 — Serving & Live Predictions
-🎯 Goal
+Goal: Deploy the best model from the registry and interact with it in real time.
 
-Deploy the best model from the registry and interact with it in real time.
-
-This lesson introduced how to serve the registered model as an API endpoint using MLflow and query it via Python to get live predictions.
-
-🧠 What I Did
+### 🔍 What I Did
 
 Served the model in Production mode using:
-
 mlflow models serve -m "models:/Lesson11_AutoPromoteModel/Production" --port 5001
 
-Created a script (predict_live.py) to send real-time data and receive predictions.
+Created a new script, predict_live.py, to send real-time data and receive predictions.
 
-Fixed input-format errors and matched the model’s 10 expected features.
+Fixed input-format errors and ensured the model received 10 expected features.
 
 Successfully received a live model prediction response:
-
 ✅ Model prediction: {'predictions': [174.03919371028604]}
 
-💡 Key Takeaways
+### 💡 Key Takeaways
 
-Learned how to deploy and serve a trained ML model locally.
-
-Understood the inference request format (JSON-based).
-
-Practiced real debugging from production-style model errors.
-
-Simulated real-world deployment workflows used in MLOps pipelines.
-
-⚙️ Lesson 12.5 — Logging Live Predictions into MLflow
-🎯 Goal
-
-Automatically log every live prediction (inputs, outputs, timestamp) into MLflow — mimicking real-world production monitoring.
-
-🧠 What I Did
-
-Integrated MLflow tracking inside predict_live.py.
-
-Logged all 10 features, prediction output, and timestamp as a new experiment:
-live_predictions_log
-
-Each live run now records:
-
-Input data (feature_1 → feature_10)
-
-Model prediction value
-
-Timestamp of the request
-
-💡 Key Takeaways
-
-Learned how to automate inference logging.
+Learned how to automate inference logging for real-time predictions.
 
 Reinforced traceability — which inputs led to which outputs.
 
-Gained observability — by visualizing prediction trends in MLflow UI.
+Added observability by visualizing prediction trends in the MLflow UI.
 
-Closed the loop on the entire ML lifecycle: from training → registry → serving → monitoring.
+Closed the loop on the full ML lifecycle: from training → registry → serving → monitoring.
 
-🔁 MLflow Lifecycle Overview
+### 🔁 MLflow Lifecycle Overview
 
 Here’s the full end-to-end flow of what I’ve built so far 👇
-
 ┌───────────────────────────────────────────────────────────────────┐
 │ MLflow Lifecycle │
 └───────────────────────────────────────────────────────────────────┘
@@ -286,13 +248,14 @@ Here’s the full end-to-end flow of what I’ve built so far 👇
 (MLflow UI)
 ─ Track prediction trends, performance drift
 
-🧭 Next Steps
+### 🧭 Next Steps
 
 Visualize prediction values over time using MLflow’s metrics view (Lesson 13).
 
 Explore automated alerts for outlier predictions or model drift.
 
-🏁 Progress Snapshot
+### 🏁 Progress Snapshot
+
 Lesson Theme Completed
 6 Experiment Tracking & Artifacts ✅
 7 MLflow UI & Visualization ✅
