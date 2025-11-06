@@ -217,34 +217,6 @@ Closed the loop on the full ML lifecycle: from training → registry → serving
 
 ### 🔁 MLflow Lifecycle Overview
 
-┌──────────────────────────────────────────────────────────────┐
-│ MLflow Lifecycle │
-└──────────────────────────────────────────────────────────────┘
-│
-▼
-[1] Experiment Tracking (train_model.py)
-─ Logs params, metrics, artifacts
-│
-▼
-[2] Model Registry (best model auto-promoted)
-─ Versions, stages: Staging → Production
-│
-▼
-[3] Model Serving (mlflow models serve)
-─ REST API endpoint at port 5001
-│
-▼
-[4] Live Predictions (predict_live.py)
-─ Sends JSON input → Receives prediction
-│
-▼
-[5] Prediction Logging (Lesson 12.5)
-─ Logs input features + prediction + timestamp
-│
-▼
-[6] Monitoring & Visualization (MLflow UI)
-─ Track prediction trends and performance drift
-
 ```
 ┌──────────────────────────────────────────────────────────────┐
 │                       MLflow Lifecycle                       │
