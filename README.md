@@ -46,7 +46,7 @@ figuring things out the hard way (but with humor and persistence).
 
 ## ☕ The Real Story
 
-> “I thought the easy part was done once I forked the repo… then I met the dependency gods.”
+> “I thought the easy part was done once I forked the repo… then I met the dependency Bros.”
 
 I’ve spent about **four separate days (spread over a few weeks)** configuring and learning this setup.  
 Each day came with new lessons — and yes, maybe one too many visits to _Gail’s Coffee_ debugging environment paths, PowerShell policies, and the mysterious `(END)` screen.
@@ -162,18 +162,27 @@ This lesson introduced the MLflow Model Registry, a key feature for managing mod
 2. The Model Registry centralises deployment-ready models.
 3. Transitions between stages (e.g., _Staging → Production_) mirror DevOps release practices.
 
-Next step: automate evaluation and version promotion — linking metrics to deployment readiness.
+---
 
 ---
 
-+---------------------+ +----------------------+ +-----------------------+ +----------------------+
-| Step 1: Experiment | ---> | Step 2: MLflow Run | ---> | Step 3: Model Log | ---> | Step 4: Registry |
-| (train_model.py) | | (auto-tracked) | | (saved via MLflow) | | (versioned + staged)|
-+---------------------+ +----------------------+ +-----------------------+ +----------------------+
-|
-v
-+----------------------+
-| Step 5: Deployment |
-| (e.g., Staging → |
-| Production) |
-+----------------------+
+## ⚙️ Lesson 11 — Automating Model Evaluation & Promotion
+
+**Goal:** Automatically identify the best-performing model and promote it to production.
+
+### 🔍 What I Did
+
+- Used `MlflowClient()` to connect to the local MLflow tracking server.
+- Retrieved all experiment runs and evaluated them by metric (`mse`).
+- Automatically selected the best-performing model (lowest MSE).
+- Registered it inside the **Model Registry** under a unique model name.
+- Automatically promoted that model to the **Production** stage.
+
+### 💡 Key Takeaways
+
+1. This workflow mirrors **DevOps CI/CD pipelines**, but for ML — automating evaluation and deployment.
+2. Introduced **automation for evaluation, registration, and version control**.
+3. Learned about **model lifecycle management** and MLflow’s upcoming migration from _stages_ → _tags_.
+4. Reinforced the concept of continuous delivery — pushing the best model forward while maintaining full version history.
+
+### 🏁 Output Example
