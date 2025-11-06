@@ -185,9 +185,13 @@ This lesson introduced the MLflow Model Registry, a key feature for managing mod
 3. Learned about **model lifecycle management** and MLflow’s upcoming migration from _stages_ → _tags_.
 4. Reinforced the concept of continuous delivery — pushing the best model forward while maintaining full version history.
 
+---
+
+---
+
 ### ⚙️ Lesson 12 — Serving & Live Predictions
 
-Goal: Deploy the best model from the registry and interact with it in real time.
+**Goal:** : Deploy the best model from the registry and interact with it in real time.
 
 ### 🔍 What I Did
 
@@ -213,40 +217,33 @@ Closed the loop on the full ML lifecycle: from training → registry → serving
 
 ### 🔁 MLflow Lifecycle Overview
 
-Here’s the full end-to-end flow of what I’ve built so far 👇
-┌───────────────────────────────────────────────────────────────────┐
+┌──────────────────────────────────────────────────────────────┐
 │ MLflow Lifecycle │
-└───────────────────────────────────────────────────────────────────┘
+└──────────────────────────────────────────────────────────────┘
 │
 ▼
-[1] Experiment Tracking
-(train_model.py)
+[1] Experiment Tracking (train_model.py)
 ─ Logs params, metrics, artifacts
 │
 ▼
-[2] Model Registry
-(best model auto-promoted)
+[2] Model Registry (best model auto-promoted)
 ─ Versions, stages: Staging → Production
 │
 ▼
-[3] Model Serving
-(mlflow models serve)
+[3] Model Serving (mlflow models serve)
 ─ REST API endpoint at port 5001
 │
 ▼
-[4] Live Predictions
-(predict_live.py)
+[4] Live Predictions (predict_live.py)
 ─ Sends JSON input → Receives prediction
 │
 ▼
-[5] Prediction Logging
-(Lesson 12.5)
+[5] Prediction Logging (Lesson 12.5)
 ─ Logs input features + prediction + timestamp
 │
 ▼
-[6] Monitoring & Visualization
-(MLflow UI)
-─ Track prediction trends, performance drift
+[6] Monitoring & Visualization (MLflow UI)
+─ Track prediction trends and performance drift
 
 ### 🧭 Next Steps
 
@@ -256,12 +253,13 @@ Explore automated alerts for outlier predictions or model drift.
 
 ### 🏁 Progress Snapshot
 
-Lesson Theme Completed
-6 Experiment Tracking & Artifacts ✅
-7 MLflow UI & Visualization ✅
-8 Model Logging ✅
-9 Model Comparison ✅
-10 Model Registry ✅
-11 Automation & Promotion ✅
-12 Model Serving & Predictions ✅
-12.5 Live Prediction Logging ✅
+| Lesson | Theme                           | Completed |
+| :----- | :------------------------------ | :-------: |
+| 6      | Experiment Tracking & Artifacts |    ✅     |
+| 7      | MLflow UI & Visualization       |    ✅     |
+| 8      | Model Logging                   |    ✅     |
+| 9      | Model Comparison                |    ✅     |
+| 10     | Model Registry                  |    ✅     |
+| 11     | Automation & Promotion          |    ✅     |
+| 12     | Model Serving & Predictions     |    ✅     |
+| 12.5   | Live Prediction Logging         |    ✅     |
