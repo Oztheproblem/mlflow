@@ -265,3 +265,33 @@ Explore automated alerts for outlier predictions or model drift.
 | 11     | Automation & Promotion          |    ✅     |
 | 12     | Model Serving & Predictions     |    ✅     |
 | 12.5   | Live Prediction Logging         |    ✅     |
+
+---
+
+## ⚙️ Lesson 13 — Visualization & Monitoring
+
+**Goal:** Visualize prediction trends over time and log visual artifacts into MLflow for ongoing monitoring.
+
+### 🔍 What I Did
+
+- Created a new script `lesson13_visualize_predictions.py`.
+- Generated or loaded live prediction data (timestamp + prediction value).
+- Plotted the trend of predictions over time using Matplotlib.
+- Logged the chart as an artifact in MLflow (`prediction_trend.png`).
+- Logged summary metrics such as mean, min, and max prediction values.
+
+### 💡 Key Takeaways
+
+1. Learned how to **log custom visualizations** as MLflow artifacts.
+2. Practiced turning data insights into tracked, reproducible results.
+3. Understood how visualization fits into **model monitoring pipelines**.
+4. Built the foundation for **automated anomaly detection** in Lesson 14.
+
+### 🧾 Output Example
+
+Run the visualization script:
+
+```bash
+python lesson13_visualize_predictions.py
+mlflow ui
+```
