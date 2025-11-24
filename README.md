@@ -370,12 +370,207 @@ Check:
 
 ---
 
-# 🎉 Final Thoughts
+## **Lesson 15 — Real-Time Monitoring (Hourly Checks) & Logging to MLflow**
 
-This repo represents **the real journey of learning MLOps tools**:  
-debugging environments, understanding MLflow deeply, and gradually building a mini production ML pipeline — with drift monitoring included.
+### 🎯 Goal
 
-If you’re learning MLflow, I hope this helps you follow along or laugh at the same mistakes I made.
+Run a lightweight **real-time monitoring** script every hour that:
+
+- pulls recent live predictions
+- summarizes them (mean/median/std/min/max)
+- logs monitoring metrics back into MLflow
+
+This continues the pipeline from Lessons 12–14:
+
+```
+serve model → live predictions → logging → monitoring stats → MLflow UI
+```
+
+---
+
+### 🔍 What I Did
+
+- Created a new script: `lesson15_monitoring.py`
+- Pulled the most recent runs from experiment: **`live_predictions_log`**
+- Converted millisecond timestamps to datetimes
+- Filtered predictions using a sliding window (**last 60 minutes**)
+- Extracted prediction values from MLflow runs using:
+  - `metrics.prediction`
+- Computed real monitoring stats:
+  - mean prediction
+  - median prediction
+  - standard deviation
+  - min / max
+- Logged monitoring metrics into a separate MLflow experiment:
+  - **`drift_monitoring`**
+- Confirmed monitoring runs appear in MLflow UI
+
+---
+
+### 💡 Key Takeaways
+
+- Monitoring is just another MLflow experiment.
+- `live_predictions_log` stores **raw live predictions**.
+- `drift_monitoring` stores **monitoring summaries**.
+- Built a repeatable monitoring job:
+
+```
+fetch runs → filter by time → compute stats → log results back to MLflow
+```
+
+- Reinforced the golden rule:
+
+✅ **No fresh predictions = nothing to monitor.**
+
+- This monitoring script sets up future MLOps upgrades like:
+  - automated alerts
+  - drift thresholds
+  - scheduled monitoring (cron / GitHub Actions)
+  - retraining triggers
+
+---
+
+### 🧨 Issues & Fixes
+
+#### 1. “⚠️ No predictions in the last 1 hour(s).”
+
+**Cause:** No recent prediction runs inside the monitoring time window.
+
+**Fix:** Generate fresh predictions first, then monitor.
+
+```bash
+python predict_live.py
+python predict_live.py
+python predict_live.py
+python lesson15_monitoring.py
+```
+
+---
+
+#### 2. Connection refused on `127.0.0.1:5001`
+
+**Cause:** The MLflow model server wasn’t running, so `predict_live.py` had no endpoint.
+
+**Fix:** Re-serve the Production model, then send predictions again.
+
+```bash
+mlflow models serve `
+  -m "models:/Lesson11_AutoPromoteModel/Production" `
+  --port 5001 `
+  --env-manager local
+```
+
+Then re-run:
+
+```bash
+python predict_live.py
+python predict_live.py
+python predict_live.py
+python lesson15_monitoring.py
+```
+
+---
+
+#### 3. MLflow UI not opening
+
+**Cause:** MLflow UI wasn’t running (or the terminal was closed).
+
+**Fix:** Restart UI:
+
+```bash
+mlflow ui
+```
+
+Open in browser:
+
+```
+http://127.0.0.1:5000
+```
+
+---
+
+#### 4. PowerShell activation blocked
+
+**Cause:** Execution policy prevented `.venv` activation.
+
+**Fix:** Temporary bypass per terminal:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\.venv\Scripts\Activate.ps1
+```
+
+✅ Result: Monitoring script runs cleanly and logs stats into MLflow.
+
+---
+
+### 🧾 How to Run Lesson 15
+
+#### 1. Start the Model Server
+
+```bash
+cd mlflow_project
+.venv\Scripts\Activate.ps1
+
+mlflow models serve `
+  -m "models:/Lesson11_AutoPromoteModel/Production" `
+  --port 5001 `
+  --env-manager local
+```
+
+---
+
+#### 2. Generate Live Predictions
+
+```bash
+.venv\Scripts\Activate.ps1
+python predict_live.py
+python predict_live.py
+python predict_live.py
+```
+
+---
+
+#### 3. Run Hourly Monitoring Script
+
+```bash
+python lesson15_monitoring.py
+```
+
+---
+
+#### 4. View in MLflow UI
+
+```bash
+mlflow ui
+```
+
+Check:
+
+- `live_predictions_log` → raw prediction runs
+- `drift_monitoring` → monitoring summary runs
+
+Each monitoring run logs:
+
+- `mean_prediction`
+- `median_prediction`
+- `std_prediction`
+- `min_prediction`
+- `max_prediction`
+
+---
+
+### 🎉 Final Thoughts
+
+This lesson adds a realistic monitoring layer on top of your live prediction pipeline.  
+You’re now tracking not just models, but **model behavior over time** — a core production MLOps skill.
+
+Keep extending this and you’ll naturally grow into:
+
+- auto-alerting
+- scheduled checks
+- retraining pipelines
+- full drift dashboards
 
 ---
 
