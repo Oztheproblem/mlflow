@@ -560,17 +560,214 @@ Each monitoring run logs:
 
 ---
 
-### 🎉 Final Thoughts
+## **Lesson 16 — Monitoring History & Trend Plots**
 
-This lesson adds a realistic monitoring layer on top of your live prediction pipeline.  
-You’re now tracking not just models, but **model behavior over time** — a core production MLOps skill.
+### 🎯 Goal
 
-Keep extending this and you’ll naturally grow into:
+Turn the `drift_monitoring` runs into a **history dashboard** by:
 
-- auto-alerting
-- scheduled checks
-- retraining pipelines
-- full drift dashboards
+- pulling all monitoring runs from MLflow
+- saving them into a tidy CSV file
+- plotting **mean prediction over time**
+
+This lesson builds on Lesson 15:
+
+```
+live predictions → drift_monitoring runs → history CSV → trend plots
+```
+
+---
+
+### 🔍 What I Did
+
+- Created a new script: `lesson16_trends.py`
+- Loaded runs from the **`drift_monitoring`** experiment using:
+
+  ```python
+  runs_df = mlflow.search_runs(experiment_names=["drift_monitoring"])
+  ```
+
+- Converted MLflow millisecond timestamps into readable datetimes:
+
+  ```python
+  runs_df["start_time"] = pd.to_datetime(
+      runs_df["start_time"], unit="ms", utc=True
+  ).dt.tz_convert("Europe/London")  # adjust timezone if needed
+  ```
+
+- Selected the key monitoring columns:
+
+  - `run_id`
+  - `start_time`
+  - `metrics.mean_prediction`
+  - `metrics.median_prediction`
+  - `metrics.std_prediction`
+  - `metrics.min_prediction`
+  - `metrics.max_prediction`
+
+- Sorted runs by `start_time` and reset the index so history is chronological
+- Saved all monitoring history to a CSV file:
+
+  ```python
+  df.to_csv("monitoring_history.csv", index=False)
+  ```
+
+- Plotted **mean prediction vs. time** with `matplotlib` and saved the figure:
+
+  ```python
+  plt.plot(df["start_time"], df["metrics.mean_prediction"], marker="o")
+  plt.savefig("monitoring_mean_prediction.png")
+  ```
+
+- Confirmed both files were created in the project root:
+  - `monitoring_history.csv`
+  - `monitoring_mean_prediction.png`
+
+---
+
+### 💡 Key Takeaways
+
+- MLflow experiments can also act as a **time-series store** for monitoring data.
+- Converting MLflow timestamps to real datetimes makes it easy to:
+  - analyse recent vs old runs
+  - plot trends and spot drift visually
+- A simple pattern for monitoring analytics:
+
+  ```
+  MLflow → Pandas (history) → CSV export → Matplotlib plot
+  ```
+
+- Storing monitoring history in CSV means you can:
+  - inspect runs in VS Code / Excel
+  - quickly share results with others
+  - feed the data into other tools (dashboards, BI, etc.)
+- Even a **single chart** (mean prediction vs time) can reveal:
+  - drift trends
+  - sudden shifts after a new model deploy
+  - periods where monitoring wasn’t running
+
+---
+
+### 🧨 Issues & Fixes
+
+#### 1. “⚠️ No runs found in 'drift_monitoring'.”
+
+**Cause:** `lesson15_monitoring.py` hasn’t been run yet, or there are no monitoring runs in that experiment.
+
+**Fix:**
+
+- Run the Lesson 15 script a few times to generate monitoring runs:
+
+  ```bash
+  .venv\Scripts\Activate.ps1
+  python lesson15_monitoring.py
+  python lesson15_monitoring.py
+  python lesson15_monitoring.py
+  ```
+
+- Then re-run Lesson 16:
+
+  ```bash
+  python lesson16_trends.py
+  ```
+
+---
+
+#### 2. Missing metric columns (e.g. `metrics.mean_prediction` not found)
+
+**Cause:** Earlier versions of the monitoring script didn’t log all metrics, or the experiment name is wrong.
+
+**Fix:**
+
+- Check that `lesson15_monitoring.py` logs:
+
+  - `mean_prediction`
+  - `median_prediction`
+  - `std_prediction`
+  - `min_prediction`
+  - `max_prediction`
+
+- Confirm the experiment name in both scripts:
+
+  ```python
+  experiment_name = "drift_monitoring"
+  ```
+
+- Re-run Lesson 15 to create new runs with all metrics, then run Lesson 16 again.
+
+---
+
+#### 3. Matplotlib / plotting issues
+
+**Typical causes:**
+
+- Using an interactive backend that doesn’t play nicely with the terminal.
+- Script trying to show the plot instead of saving it.
+
+**Fix / Design choice:**
+
+- The script uses **`plt.savefig()` + `plt.close()`** only — no `plt.show()`.
+- This avoids GUI/backend issues and always writes directly to:
+
+  - `monitoring_mean_prediction.png`
+
+If the PNG doesn’t appear, double-check that you are running the script from the `mlflow_project` folder and that you have write permissions there.
+
+---
+
+### 🧾 How to Run Lesson 16
+
+#### 1. (Optional) Generate some fresh monitoring runs
+
+From inside `mlflow_project`:
+
+```bash
+.venv\Scripts\Activate.ps1
+
+# Assumes Lesson 15 is already set up & working
+python lesson15_monitoring.py
+python lesson15_monitoring.py
+python lesson15_monitoring.py
+```
+
+> The more runs you have, the better your history & charts will look.
+
+---
+
+#### 2. Run the Lesson 16 trend script
+
+```bash
+.venv\Scripts\Activate.ps1
+python lesson16_trends.py
+```
+
+This will:
+
+- query **`drift_monitoring`**
+- write **`monitoring_history.csv`**
+- create **`monitoring_mean_prediction.png`**
+
+---
+
+#### 3. Inspect the Outputs
+
+- Open `monitoring_history.csv` in:
+
+  - VS Code
+  - Excel
+  - or any CSV viewer
+
+  You should see one row per monitoring run with:
+
+  - timestamp (`start_time`)
+  - `mean_prediction`
+  - `median_prediction`
+  - `std_prediction`
+  - `min_prediction`
+  - `max_prediction`
+
+- Open `monitoring_mean_prediction.png`  
+  and review the **trend of mean predictions over time** to spot jumps or drift.
 
 ---
 
