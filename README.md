@@ -1,3 +1,17 @@
+# 🧠 MLflow Learning Journey — TL;DR
+
+This repo is my mini **MLOps lab** built with MLflow.  
+I go from a **served Production model** → to **logging live predictions** → to **drift monitoring** → to **trend plots** → to **drift alerts**.
+
+What you’ll see here:
+
+- `predict_live.py` logs live predictions to MLflow
+- `lesson15_monitoring.py` turns them into monitoring stats
+- `lesson16_trends.py` exports history + a mean-prediction trend plot
+- `lesson17_alerts.py` computes a dynamic drift threshold and writes alerts to `alerts.log` + the `drift_alerts` experiment
+
+Everything below this TL;DR is a step-by-step breakdown of Lessons 1–17.
+
 <div align="center">
 
 # 🧠 MLflow Learning Journey
