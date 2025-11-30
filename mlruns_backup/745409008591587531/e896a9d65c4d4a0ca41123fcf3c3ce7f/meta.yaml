@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/WINDOWS%2011%20USER/Documents/VsCode/mlflow_project/mlruns/745409008591587531/e896a9d65c4d4a0ca41123fcf3c3ce7f/artifacts
+end_time: 1762108588214
+entry_point_name: ''
+experiment_id: '745409008591587531'
+lifecycle_stage: active
+run_id: e896a9d65c4d4a0ca41123fcf3c3ce7f
+run_name: big-goose-368
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762108585022
+status: 3
+tags: []
+user_id: WINDOWS 11 USER

@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/WINDOWS%2011%20USER/Documents/VsCode/mlflow_project/mlruns/413241771487871914/2099b1d7897c445781c59fa6986defb6/artifacts
+end_time: 1762873611282
+entry_point_name: ''
+experiment_id: '413241771487871914'
+lifecycle_stage: active
+run_id: 2099b1d7897c445781c59fa6986defb6
+run_name: lesson13_visualization
+run_uuid: 2099b1d7897c445781c59fa6986defb6
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762873610745
+status: 3
+tags: []
+user_id: WINDOWS 11 USER

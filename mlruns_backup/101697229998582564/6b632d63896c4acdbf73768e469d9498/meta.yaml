@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/WINDOWS%2011%20USER/Documents/VsCode/mlflow_project/mlruns/101697229998582564/6b632d63896c4acdbf73768e469d9498/artifacts
+end_time: 1763913995397
+entry_point_name: ''
+experiment_id: '101697229998582564'
+lifecycle_stage: active
+run_id: 6b632d63896c4acdbf73768e469d9498
+run_name: live_prediction_1763913994
+run_uuid: 6b632d63896c4acdbf73768e469d9498
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763913995258
+status: 3
+tags: []
+user_id: WINDOWS 11 USER

@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1762285146821
+current_stage: None
+description: null
+last_updated_timestamp: 1762285146821
+name: ridge_regression_model
+run_id: 4a69ed3bac7e414a9a3f0eaeeaab770b
+run_link: null
+source: file:///C:/Users/WINDOWS%2011%20USER/Documents/VsCode/mlflow_project/mlruns/968049824894287940/4a69ed3bac7e414a9a3f0eaeeaab770b/artifacts/model
+status: READY
+status_message: null
+storage_location: file:///C:/Users/WINDOWS%2011%20USER/Documents/VsCode/mlflow_project/mlruns/968049824894287940/4a69ed3bac7e414a9a3f0eaeeaab770b/artifacts/model
+user_id: null
+version: 1

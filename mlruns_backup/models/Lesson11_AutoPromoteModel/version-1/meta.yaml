@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1762438766817
+current_stage: Production
+description: null
+last_updated_timestamp: 1762438766899
+name: Lesson11_AutoPromoteModel
+run_id: b0b3ea99780f4e0abf688c478c6c5ebb
+run_link: null
+source: runs:/b0b3ea99780f4e0abf688c478c6c5ebb/model
+status: READY
+status_message: null
+storage_location: runs:/b0b3ea99780f4e0abf688c478c6c5ebb/model
+user_id: null
+version: 1

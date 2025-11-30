@@ -769,6 +769,318 @@ This will:
 - Open `monitoring_mean_prediction.png`  
   and review the **trend of mean predictions over time** to spot jumps or drift.
 
+## **Lesson 17 — Drift Alerts & Dynamic Thresholds**
+
+### 🎯 Goal
+
+Add a simple **drift alerting layer** on top of the monitoring pipeline by:
+
+- loading recent monitoring runs from **`drift_monitoring`**
+- computing a **dynamic drift threshold** from history
+- comparing the **latest mean prediction** against that threshold
+- writing the result to an **`alerts.log`** file
+- logging an `alert_triggered` flag and related metrics into a new MLflow experiment: **`drift_alerts`**
+
+This builds directly on Lessons 15–16:
+
+```
+live predictions → monitoring runs → history → drift alerts
+```
+
+---
+
+### 🔍 What I Did
+
+- Created a new script: `lesson17_alerts.py`
+- Defined constants at the top:
+
+  ```python
+  EXPERIMENT_MONITORING = "drift_monitoring"
+  EXPERIMENT_ALERTS = "drift_alerts"
+
+  BASELINE_WINDOW = 20        # how many runs to use for history
+  STD_MULTIPLIER = 3.0        # how “wide” the threshold is
+  ALERT_LOG_FILE = "alerts.log"
+  ```
+
+- Loaded all monitoring runs from **`drift_monitoring`**:
+
+  ```python
+  runs_df = mlflow.search_runs(experiment_names=[EXPERIMENT_MONITORING])
+  ```
+
+- Converted MLflow timestamps to datetimes:
+
+  ```python
+  runs_df["start_time"] = pd.to_datetime(
+      runs_df["start_time"], unit="ms", utc=True
+  )
+  ```
+
+- Selected and sorted the key columns:
+
+  ```python
+  cols = [
+      "run_id",
+      "start_time",
+      "metrics.mean_prediction",
+  ]
+
+  runs_df = runs_df[cols].sort_values("start_time").reset_index(drop=True)
+  ```
+
+- Used the last `BASELINE_WINDOW` runs to compute a **dynamic threshold**:
+
+  ```python
+  history = df.tail(BASELINE_WINDOW)
+  mean_series = history["metrics.mean_prediction"]
+
+  baseline_mean = float(mean_series.mean())
+  baseline_std = float(mean_series.std(ddof=0))  # population std
+  threshold = baseline_mean + STD_MULTIPLIER * baseline_std
+  ```
+
+- Took the **latest monitoring run** and compared it with the threshold:
+
+  ```python
+  latest = df.iloc[-1]
+  latest_mean = float(latest["metrics.mean_prediction"])
+  latest_time = latest["start_time"]
+
+  alert_triggered = latest_mean > threshold
+  ```
+
+- Built a human-readable message with all the key numbers:
+
+  ```python
+  status = "TRIGGERED" if alert_triggered else "OK"
+  message = (
+      f"Alert status: {status} | "
+      f"latest_mean={latest_mean:.4f}, "
+      f"baseline_mean={baseline_mean:.4f}, "
+      f"baseline_std={baseline_std:.4f}, "
+      f"threshold={threshold:.4f}, "
+      f"time={latest_time}"
+  )
+  ```
+
+- Appended this message to **`alerts.log`** with a UTC timestamp:
+
+  ```python
+  from datetime import datetime
+  from pathlib import Path
+
+  def log_alert_to_file(message: str, log_path: Path) -> None:
+      timestamp = datetime.utcnow().isoformat()
+      log_path.parent.mkdir(parents=True, exist_ok=True)
+      with log_path.open("a", encoding="utf-8") as f:
+          f.write(f"[{timestamp} UTC] {message}\n")
+  ```
+
+- Logged an alert “summary run” into a new MLflow experiment **`drift_alerts`**:
+
+  ```python
+  mlflow.set_experiment(EXPERIMENT_ALERTS)
+  with mlflow.start_run(run_name="lesson17_drift_alert"):
+      mlflow.log_metric("latest_mean_prediction", latest_mean)
+      mlflow.log_metric("baseline_mean", baseline_mean)
+      mlflow.log_metric("baseline_std", baseline_std)
+      mlflow.log_metric("dynamic_threshold", threshold)
+      mlflow.log_metric("alert_triggered", int(alert_triggered))
+  ```
+
+- Printed a final success message:
+
+  ```python
+  print("✅ Lesson 17 complete: alert check recorded in alerts.log and MLflow.")
+  ```
+
+---
+
+### 💡 Key Takeaways
+
+- You can treat **monitoring runs as a time series** and compute meaningful thresholds from recent history.
+- A simple but practical drift rule:
+
+  ```text
+  alert if latest_mean > baseline_mean + k * baseline_std
+  ```
+
+  where:
+
+  - `baseline_mean` = mean of last N runs
+  - `baseline_std` = std of last N runs
+  - `k` (here `STD_MULTIPLIER`) controls how sensitive the alerting is
+
+- Writing alerts to a plain-text **`alerts.log`** gives you a cheap, grep-able audit trail.
+- Creating a dedicated **`drift_alerts`** experiment separates:
+  - raw live predictions (`live_predictions_log`)
+  - monitoring aggregates (`drift_monitoring`)
+  - alert decisions (`drift_alerts`)
+- The pattern is now:
+
+  ```
+  predictions → monitoring stats → thresholds & alerts → logs + MLflow
+  ```
+
+  which is a real-world MLOps alerting workflow in mini form.
+
+---
+
+### 🧨 Issues & Fixes
+
+#### 1. “⚠️ No runs found in 'drift_monitoring'.”
+
+**Cause:** Lesson 15 hasn’t been run, or there are no monitoring runs logged yet.
+
+**Fix:**
+
+- First, generate predictions and monitoring runs (from Lesson 15):
+
+  ```bash
+  .venv\Scripts\Activate.ps1
+  python predict_live.py
+  python predict_live.py
+  python predict_live.py
+
+  python lesson15_monitoring.py
+  python lesson15_monitoring.py
+  ```
+
+- Then re-run Lesson 17:
+
+  ```bash
+  python lesson17_alerts.py
+  ```
+
+---
+
+#### 2. Missing `metrics.mean_prediction` in `drift_monitoring`
+
+**Cause:** `lesson15_monitoring.py` didn’t log `mean_prediction`, or experiment name mismatch.
+
+**Fix:**
+
+- Check that Lesson 15 is logging:
+
+  ```python
+  mlflow.log_metric("mean_prediction", mean_pred)
+  ```
+
+- Confirm the experiment name in both scripts is exactly:
+
+  ```python
+  "drift_monitoring"
+  ```
+
+- Re-run Lesson 15 to create new, correctly-logged monitoring runs, then re-run Lesson 17.
+
+---
+
+#### 3. Baseline window too small
+
+If you have fewer than `BASELINE_WINDOW` runs, your “history” is tiny and the threshold might be unstable.
+
+Options:
+
+- Reduce the window:
+
+  ```python
+  BASELINE_WINDOW = 5
+  ```
+
+- Or simply generate more monitoring runs before using Lesson 17:
+
+  ```bash
+  python lesson15_monitoring.py
+  python lesson15_monitoring.py
+  python lesson15_monitoring.py
+  ```
+
+---
+
+### 🧾 How to Run Lesson 17
+
+From your `mlflow_project` folder:
+
+#### 1. (Optional) Generate fresh monitoring runs
+
+```bash
+.venv\Scripts\Activate.ps1
+
+python predict_live.py
+python predict_live.py
+python predict_live.py
+
+python lesson15_monitoring.py
+python lesson15_monitoring.py
+```
+
+> This ensures `drift_monitoring` has enough recent data for the alert baseline.
+
+---
+
+#### 2. Run the alert script
+
+```bash
+python lesson17_alerts.py
+```
+
+This will:
+
+- load monitoring runs from `drift_monitoring`
+- compute baseline mean/std and a dynamic threshold
+- compare the latest mean prediction to that threshold
+- append a line into **`alerts.log`**
+- log an alert summary run into the **`drift_alerts`** experiment
+
+---
+
+#### 3. Inspect the Outputs
+
+- Open **`alerts.log`** in your editor:
+
+  You’ll see lines like:
+
+  ```text
+  [2025-11-30T15:45:12.345678 UTC] Alert status: OK | latest_mean=0.5231, baseline_mean=0.5102, baseline_std=0.0123, threshold=0.5461, time=2025-11-30 15:44:10+00:00
+  ```
+
+- In **MLflow UI**:
+
+  - Look for experiment **`drift_alerts`**
+  - Each run corresponds to one alert check and logs:
+    - `latest_mean_prediction`
+    - `baseline_mean`
+    - `baseline_std`
+    - `dynamic_threshold`
+    - `alert_triggered` (0 or 1)
+
+You can later build dashboards based on these alert runs (e.g. number of alerts per day, how far above threshold, etc.).
+
+---
+
+### 🎉 Final Thoughts
+
+By Lesson 17, you now have:
+
+- **Live predictions** (`live_predictions_log`)
+- **Monitoring summaries** (`drift_monitoring`)
+- **History + plots** (`monitoring_history.csv`, `monitoring_mean_prediction.png`)
+- **Drift alerts** (`alerts.log` + `drift_alerts`)
+
+This is a solid mini MLOps stack:
+
+- log → monitor → analyse → alert
+
+From here, next natural steps are:
+
+- pushing alerts to Slack / email
+- configuring thresholds per model / feature
+- integrating alerts with retraining or rollback workflows
+
+But even as-is, you’ve built a realistic production-style **drift alert loop**. 🚀
+
 ---
 
 <div align="center">

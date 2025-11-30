@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/WINDOWS%2011%20USER/Documents/VsCode/mlflow_project/mlruns/826305645252232777/b0b3ea99780f4e0abf688c478c6c5ebb/artifacts
+end_time: 1762282173081
+entry_point_name: ''
+experiment_id: '826305645252232777'
+lifecycle_stage: active
+run_id: b0b3ea99780f4e0abf688c478c6c5ebb
+run_name: ridge_regression
+run_uuid: b0b3ea99780f4e0abf688c478c6c5ebb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762282164996
+status: 3
+tags: []
+user_id: WINDOWS 11 USER

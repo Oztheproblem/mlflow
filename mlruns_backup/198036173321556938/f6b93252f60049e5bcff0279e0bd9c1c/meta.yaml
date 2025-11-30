@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/WINDOWS%2011%20USER/Documents/VsCode/mlflow_project/mlruns/198036173321556938/f6b93252f60049e5bcff0279e0bd9c1c/artifacts
+end_time: 1762284625357
+entry_point_name: ''
+experiment_id: '198036173321556938'
+lifecycle_stage: active
+run_id: f6b93252f60049e5bcff0279e0bd9c1c
+run_name: ridge_alpha_2.0
+run_uuid: f6b93252f60049e5bcff0279e0bd9c1c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762284625227
+status: 3
+tags: []
+user_id: WINDOWS 11 USER

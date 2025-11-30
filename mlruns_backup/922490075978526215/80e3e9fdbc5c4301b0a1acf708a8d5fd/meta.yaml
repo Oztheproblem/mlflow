@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/WINDOWS%2011%20USER/Documents/VsCode/mlflow_project/mlruns/922490075978526215/80e3e9fdbc5c4301b0a1acf708a8d5fd/artifacts
+end_time: 1763992204392
+entry_point_name: ''
+experiment_id: '922490075978526215'
+lifecycle_stage: active
+run_id: 80e3e9fdbc5c4301b0a1acf708a8d5fd
+run_name: lesson15_drift_check_1763992203
+run_uuid: 80e3e9fdbc5c4301b0a1acf708a8d5fd
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763992204054
+status: 3
+tags: []
+user_id: WINDOWS 11 USER
